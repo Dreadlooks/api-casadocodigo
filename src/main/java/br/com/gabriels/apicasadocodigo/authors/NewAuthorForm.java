@@ -2,12 +2,17 @@ package br.com.gabriels.apicasadocodigo.authors;
 
 import org.hibernate.validator.constraints.URL;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 
 public class NewAuthorForm {
 
     @NotBlank
     private String name;
+
+    @NotBlank
+    @Column(columnDefinition = "text")
+    private String description;
 
     @NotBlank
     @URL
@@ -21,6 +26,14 @@ public class NewAuthorForm {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getLinkGithub() {
         return linkGithub;
     }
@@ -30,6 +43,6 @@ public class NewAuthorForm {
     }
 
     public Author toModel() {
-        return new Author(name, linkGithub);
+        return new Author(name, description, linkGithub);
     }
 }
