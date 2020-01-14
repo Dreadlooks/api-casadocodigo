@@ -1,11 +1,10 @@
 package br.com.gabriels.apicasadocodigo.categories;
 
-import org.springframework.validation.Errors;
-import org.springframework.validation.Validator;
+import br.com.gabriels.apicasadocodigo.shared.validator.UniqueFieldValidator;
 
 import java.util.Optional;
 
-public class UniqueCategoryNameValidator implements Validator {
+public class UniqueCategoryNameValidator extends UniqueFieldValidator {
 
     private CategoryRepository categoryRepository;
 
@@ -14,17 +13,13 @@ public class UniqueCategoryNameValidator implements Validator {
     }
 
     @Override
-    public boolean supports(Class<?> clazz) {
-        return NewCategoryForm.class.isAssignableFrom(clazz);
+    public Optional<?> getFieldToSearch(Object object) {
+        NewCategoryForm categoryForm = (NewCategoryForm) object;
+        return categoryRepository.findByName(categoryForm.getName());
     }
 
     @Override
-    public void validate(Object object, Errors errors) {
-        NewCategoryForm form = (NewCategoryForm) object;
-        Optional<Category> possibleCategory = categoryRepository.findByName(form.getName());
-
-        if (possibleCategory.isPresent()) {
-            errors.rejectValue("name", null, "Não pode conter nome de categoria repetido!");
-        }
+    public String getInvalidField() {
+        return "name";
     }
 }

@@ -1,6 +1,8 @@
 package br.com.gabriels.apicasadocodigo.books;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,5 +23,10 @@ public class BookController {
     public void save(@Valid NewBookForm form) {
         Book book = bookConverter.convert(form);
         bookRepository.save(book);
+    }
+
+    @InitBinder("newBookForm")
+    public void InitBinder(WebDataBinder binder) {
+        binder.addValidators(new UniqueBookTitleValidator(bookRepository), new UniqueBookIsbnValidador(bookRepository));
     }
 }
