@@ -14,8 +14,12 @@ public class BookController {
     @Autowired
     private BookConverter bookConverter;
 
+    @Autowired
+    private BookRepository bookRepository;
+
     @PostMapping
     public void save(@Valid NewBookForm form) {
         Book book = bookConverter.convert(form);
+        bookRepository.save(book);
     }
 }

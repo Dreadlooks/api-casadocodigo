@@ -65,4 +65,44 @@ public class Book {
         this.linkToCover = linkToCover;
         this.author = author;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getSubtitle() {
+        return subtitle;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getSummary() {
+        return summary;
+    }
+
+    public int getNumberOfPages() {
+        return numberOfPages;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    public String getLinkToCover() {
+        return linkToCover;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
 }
