@@ -26,7 +26,7 @@ public class BookController {
     }
 
     @InitBinder("newBookForm")
-    public void InitBinder(WebDataBinder binder) {
+    public void initBinder(WebDataBinder binder) {
         binder.addValidators(new UniqueBookTitleValidator(bookRepository), new UniqueBookIsbnValidador(bookRepository));
     }
 }
