@@ -4,7 +4,7 @@ import br.com.gabriels.apicasadocodigo.shared.validator.UniqueFieldValidator;
 
 import java.util.Optional;
 
-public class UniqueCategoryNameValidator extends UniqueFieldValidator {
+public class UniqueCategoryNameValidator extends UniqueFieldValidator<NewCategoryForm> {
 
     private CategoryRepository categoryRepository;
 
@@ -13,8 +13,7 @@ public class UniqueCategoryNameValidator extends UniqueFieldValidator {
     }
 
     @Override
-    public Optional<?> getFieldToSearch(Object object) {
-        NewCategoryForm categoryForm = (NewCategoryForm) object;
+    public Optional getFieldToSearch(NewCategoryForm categoryForm) {
         return categoryRepository.findByName(categoryForm.getName());
     }
 

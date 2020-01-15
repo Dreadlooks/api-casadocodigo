@@ -4,7 +4,7 @@ import br.com.gabriels.apicasadocodigo.shared.validator.UniqueFieldValidator;
 
 import java.util.Optional;
 
-public class UniqueBookTitleValidator extends UniqueFieldValidator {
+public class UniqueBookTitleValidator extends UniqueFieldValidator<NewBookForm> {
 
     private BookRepository bookRepository;
 
@@ -13,8 +13,7 @@ public class UniqueBookTitleValidator extends UniqueFieldValidator {
     }
 
     @Override
-    public Optional<?> getFieldToSearch(Object object) {
-        NewBookForm bookForm = (NewBookForm) object;
+    public Optional getFieldToSearch(NewBookForm bookForm) {
         return bookRepository.findByTitle(bookForm.getTitle());
     }
 

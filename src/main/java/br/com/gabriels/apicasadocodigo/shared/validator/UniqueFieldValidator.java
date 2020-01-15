@@ -5,7 +5,7 @@ import org.springframework.validation.Validator;
 
 import java.util.Optional;
 
-public abstract class UniqueFieldValidator implements Validator {
+public abstract class UniqueFieldValidator<T> implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
@@ -15,7 +15,7 @@ public abstract class UniqueFieldValidator implements Validator {
     @Override
     public void validate(Object object, Errors errors) {
 
-         Optional<?> possibleField = getFieldToSearch(object);
+         Optional<?> possibleField = getFieldToSearch((T)object);
 
          if (possibleField.isPresent()) {
              String invalidField = getInvalidField();
@@ -23,7 +23,7 @@ public abstract class UniqueFieldValidator implements Validator {
          }
     }
 
-    public abstract Optional<?> getFieldToSearch(Object object);
+    public abstract Optional<T> getFieldToSearch(T object);
 
     public abstract String getInvalidField();
 }
