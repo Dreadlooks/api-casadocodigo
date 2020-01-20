@@ -1,6 +1,7 @@
 package br.com.gabriels.apicasadocodigo.site.detail;
 
 import br.com.gabriels.apicasadocodigo.books.Book;
+import br.com.gabriels.apicasadocodigo.shared.markdown.MarkdownParser;
 
 import java.math.BigDecimal;
 
@@ -13,6 +14,7 @@ public class BookDetailDto {
     private BigDecimal price;
     private String content;
     private String summary;
+    private String htmlSummary;
     private AuthorBookDetailDto author;
     private int numberOfPages;
 
@@ -25,6 +27,7 @@ public class BookDetailDto {
         this.price = book.getPrice();
         this.content =  book.getContent();
         this.summary = book.getSummary();
+        this.htmlSummary = MarkdownParser.renderHtml(book.getSummary());
         this.author = new AuthorBookDetailDto(book.getAuthor());
         this.numberOfPages = book.getNumberOfPages();
     }
@@ -55,6 +58,10 @@ public class BookDetailDto {
 
     public String getSummary() {
         return summary;
+    }
+
+    public String getHtmlSummary() {
+        return htmlSummary;
     }
 
     public AuthorBookDetailDto getAuthor() {
