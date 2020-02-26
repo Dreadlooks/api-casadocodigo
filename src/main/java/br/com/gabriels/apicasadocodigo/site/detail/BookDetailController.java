@@ -2,6 +2,7 @@ package br.com.gabriels.apicasadocodigo.site.detail;
 
 import br.com.gabriels.apicasadocodigo.books.Book;
 import br.com.gabriels.apicasadocodigo.books.BookRepository;
+import br.com.gabriels.apicasadocodigo.shared.Cookies;
 import br.com.gabriels.apicasadocodigo.shared.exception.BookNotFoundException;
 import br.com.gabriels.apicasadocodigo.site.cart.Cart;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,6 +21,9 @@ public class BookDetailController {
     @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
+    private Cookies cookies;
+
     @GetMapping("/{id}")
     public BookDetailDto detail(@PathVariable("id") Long id) {
 
@@ -29,23 +33,12 @@ public class BookDetailController {
 
     @PostMapping("/cart/{id}")
     public Cart addBookToCart(@PathVariable("id") Long id, @CookieValue("cart") Optional<String> cartJson,
-                              HttpServletResponse response) throws JsonProcessingException {
+                              HttpServletResponse response) {
 
-        Cart cart = cartJson.map(json -> {
-            try {
-                return new ObjectMapper().readValue(json, Cart.class);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-        }).orElse(new Cart());
-
-
+        Cart cart = Cart.build(cartJson);
         cart.add(bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException()));
 
-        Cookie cookie = new Cookie("cart", new ObjectMapper().writeValueAsString(cart));
-        cookie.setHttpOnly(true);
-        response.addCookie(cookie);
-
+        cookies.writeAsJson("cart", cart, response);
         return cart;
     }
 }
